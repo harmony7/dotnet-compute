@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId>HarmonicBytes.FastlyCompute</PackageId>
+        <Version>0.1.0-beta.1</Version>
+        <Authors>harmony7</Authors>
+        <Company>HarmonicBytes</Company>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="build\**" Pack="True" PackagePath="build\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="host_bindings\**" Pack="True" PackagePath="host_bindings\" />
+        <None Include="platform_workaround\**" Pack="True" PackagePath="platform_workaround\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="BouncyCastle.Cryptography" Version="2.3.1" />
+    </ItemGroup>
+    
+</Project>

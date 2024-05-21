@@ -1,0 +1,119 @@
+TODOs
+=====
+
+* Implement Basic Host Request (ok)
+  - Getting downstream request (ok)
+  - HostReq for getting request Method, URI, Path, Version, Headers (ok)
+  - HostBody for reading (ok)
+  
+* Implement Basic Host Response (ok)
+  - HostResp for setting Status, Headers (ok)
+  - HostBody for writing (ok)
+  - Sending downstream response (ok)
+
+* Implement Request and Response objects that can get information about the current request and send a response (ok)
+  * Sending a Response seems to just be about instantiating a Response with resp_new and then calling resp_send_downstream (ok)
+
+* See if we can get DI to work.  I hope we can, this can (eventually) work for things like ASP.NET MVC controllers
+
+* We can run in two modes:
+  - Direct, which will allow the user to get the request message themselves, build a response message, and send it back downstream.
+  - Framework, which allows the user to subclass HttpMessageHandler. Then the framework will call this HttpMessageHandler.
+  - Framework mode will have its own HttpMessageInvoker that will be used to call your framework. 
+  - We can probably use an attribute to mark this class. See if we can have a main program in the class library,
+    and then we will override that in our program if it exists
+     
+* If we can do wizening in some way:
+  - Wizer only runs if we are in framework mode
+  - Wizer entry point will check if we have a framework mode app, and then run the startup code for it
+  - Wizer mode will also have a Main function that contains the code to invoke the framework.
+    including instantiating the HttpMessageInvoker, wiring it up with HttpMessageHandler,
+    and calling it. 
+
+* HttpReq still needs to be able to SendAsync / SendAsyncStreaming
+* HttpPendingReq possibly needed for outgoing requests
+
+System.Net.Http
+===============
+
+* There are classes:
+  - HttpRequestMessage
+  - HttpResponseMessage
+
+* These should be implemented in terms of Compute (ok)
+
+* Implement HttpMessageHandler so that we can use HttpClient (ok)
+  * Is there any way to get the default one to work?
+    - no, in fact, HttpClient won't work at all due to no Threading support
+      in .NET 8 + wasm. For now, we use HttpMessageInvoker, and wait for .NET 9.
+  * We provide FastlyHttpClient, which extends HttpMessageInvoker and configures
+    it with our HttpMessageInvoker. (ok)
+  * To use it, instantiate FastlyHttpClient, and then create HttpRequestMessage
+    objects that have their Method, Uri, Headers, Content set up. Then call
+    `client.Send()`. (ok)
+
+* Add to HttpRequestMessage:
+  - Backend (ok)
+  - CacheOverride (ok)
+  - CacheKey (ok)
+  - FramingHeadersMode
+  - Auto Decompress
+  
+Fastly Things
+=============
+
+* See if we can read stuff out of resources, that way we don't actually need
+  IncludeBytes
+  * We can, by adding the file to your app, marking it as "<EmbeddedResource>" in the
+    csproj, and then calling `Assembly.GetEntryAssembly()?.GetManifestResourceStream(resourcename)` (ok)
+
+* Interface with WASI to use the following:
+  * Redirect to GRIP proxy (ok)
+  * GeoIp (ok)
+  * Invocation.GetClientInfo() (ok)
+    * Client Address - string (ok)
+    * Client GeoIp - GeoInfo (ok)
+    * TlsJA3MD5 - string (ok)
+    * TlsCipherOpensslName - string (ok)
+    * TlsProtocol - string (ok)
+    * TlsClientCertificate - byte[] (ok)
+    * TlsClientHello - byte[] (ok)
+  * Config Store (internally dict) (ok)
+  * Secret Store (ok)
+  * KV Store (internally object_store) (ok)
+  * Backend
+    * Associate with a Backend Request (ok)
+    * Exists
+    * Is Healthy
+  * Cache Override (ok)
+  * Purging Surrogate Key (ok)
+  * CacheKey (ok) (We use BouncyCastle for the Crypto)
+  * Framing Headers Mode
+  * Named Logs
+  * Dynamic Backends
+  * Auto Decompress
+  * Async I/O - this can let us know if reading from an input handle would cause blocking
+  * Cache
+    * Lookup, Insert, Transactional Lookup, Transactional Insert
+  * Edge Rate Limiter
+  * Device Detection
+
+ASP.NET Core
+============
+
+ASP.NET Core seems not to be supported for the wasi-wasm RuntimeTarget.
+There are many search results on Google that back this observation.
+
+If one day this is supported, it would be very cool to be able to write
+ASP.NET apps for Fastly Compute.
+
+* Make an HTTP Context object that will contain the downstream request
+and response.
+
+* Other Compute-specific stuff can be made available as a Feature set,
+attached only to HttpRequest
+  
+* Implement IServer
+
+* Embed files in the project as resources, and make them available to file APIs such as those
+that can be used for things like ASP.NET MVC and loading files

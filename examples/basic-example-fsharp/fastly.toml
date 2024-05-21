@@ -1,0 +1,34 @@
+# This file describes a Fastly Compute package. To learn more visit:
+# https://www.fastly.com/documentation/reference/compute/fastly-toml
+
+authors = ["komuro@fastly.com"]
+description = ""
+language = "other"
+manifest_version = 3
+name = "compute"
+service_id = ""
+
+[local_server]
+[local_server.backends]
+[local_server.backends.httpbin]
+url = "https://httpbin.org/"
+override_host = "httpbin.org"
+
+[local_server.config_stores]
+[local_server.config_stores.example_config_store]
+format = "inline-toml"
+[local_server.config_stores.example_config_store.contents]
+"foo" = "bar"
+
+[local_server.secret_stores]
+[[local_server.secret_stores.example_secret_store]]
+key = "api-key"
+data = "api-key-value"
+
+[local_server.kv_stores]
+[[local_server.kv_stores.example_kv_store]]
+key = "data"
+file = "./kvstore-sampledata.txt"
+
+[scripts]
+build = "dotnet publish -c Release App && cp ./App/bin/Release/net8.0/wasi-wasm/AppBundle/App.wasm ./bin/main.wasm"

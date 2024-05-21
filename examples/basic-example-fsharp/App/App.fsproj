@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <PublishTrimmed>true</PublishTrimmed>
+    <WasmSingleFileBundle>true</WasmSingleFileBundle>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DebuggerSupport>false</DebuggerSupport>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\HarmonicBytes.FastlyCompute\HarmonicBytes.FastlyCompute.csproj" />
+  </ItemGroup>
+
+  <!-- ProjectReference doesn't include content from dependency, so explicitly import target file in this example -->
+  <Import Project="..\..\..\src\HarmonicBytes.FastlyCompute\build\HarmonicBytes.FastlyCompute.targets" />
+
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+    <EmbeddedResource Include="resource-data.txt" />
+  </ItemGroup>
+
+</Project>

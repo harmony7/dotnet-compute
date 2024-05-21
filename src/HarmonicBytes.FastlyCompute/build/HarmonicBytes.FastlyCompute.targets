@@ -1,0 +1,8 @@
+<Project>
+    <ItemGroup>
+        <_WasiSdkClangArgs Include="-DWASI_AFTER_RUNTIME_LOADED_DECLARATIONS=&quot;void _args_fix(int %2Aargc,char %2A%2Aargv[])%3B&quot;" />
+        <_WasiSdkClangArgs Include="-DWASI_AFTER_RUNTIME_LOADED_CALLS=&quot;_args_fix(&amp;argc,&amp;argv)%3B&quot;" />
+        <_WasmNativeFileForLinking Include="$(MSBuildThisFileDirectory)/../host_bindings/*.c" />
+        <_WasmNativeFileForLinking Include="$(MSBuildThisFileDirectory)/../platform_workaround/*.c" />
+    </ItemGroup>
+</Project>

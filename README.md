@@ -2,6 +2,31 @@
 
 by Katsuyuki Omuro
 
+This is an SDK and runtime library for building [.NET Core](https://dotnet.microsoft.com/en-us/)
+applications for [Fastly Compute](https://www.fastly.com/documentation/guides/compute/).
+
+This SDK works with [.NET 8](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8/overview),
+using the `wasi-experimental` workload pack (described [here](https://devblogs.microsoft.com/dotnet/extending-web-assembly-to-the-cloud/)).
+
+> [!WARNING]
+> Use at your own risk. This is a personal project that I'm working on in
+> my free time. It's not owned or sponsored by Fastly, so please don't try
+> to contact them for support with it. If you need help, try reaching out
+> in the [issue tracker](https://github.com/harmony7/dotnet-compute/issues).
+
+* [Documentation](./docs/index.md)
+* For quick usage instructions, see the following: 
+  * [Prerequisites](./src/HarmonicBytes.FastlyCompute/README.md#prerequisites) 
+  * [Usage](./src/HarmonicBytes.FastlyCompute/README.md#usage) 
+  * [Limitations](./src/HarmonicBytes.FastlyCompute/README.md#limitations) 
+* [Package README](./src/HarmonicBytes.FastlyCompute/README.md)
+
+### Directory Structure
+
+* [src/](./src) - Class library sources
+* [docs/](./docs) - Documentation
+* [examples/](./examples) - Examples
+
 ### LICENSE
 
 [Apache 2.0](./LICENSE)
